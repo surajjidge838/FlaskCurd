@@ -1,5 +1,9 @@
 from flask import  Flask, render_template,request, redirect, url_for,flash
 from flask_sqlalchemy import SQLAlchemy
+import logging
+
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 app=Flask(__name__)
 app.secret_key='secrete_key'
@@ -41,8 +45,8 @@ def insert():
     if request.method=='POST':
         #get the text input insert into new user modal
         name=request.form['Name']
-        email = request.form[ 'Email' ]
-        phone = request.form[ 'Phone' ]
+        email=request.form['Email']
+        phone=request.form['Phone']
 
         # create object for Data class & pass it to constructor of Data class
         my_data=Data(name,email,phone)
@@ -61,7 +65,7 @@ def update():
         my_data=Data.query.get(request.form.get('id')) # this is a hidden id from Edit form
         # get the data from update form & set it to the model class & update into db
         my_data.name=request.form['Name']
-        my_data.email = request.form[ 'Email' ]
+        my_data.email = request.form['Email']
         my_data.phone = request.form['Phone']
         db.session.commit()
         flash('Emp data updated successfully..!')
@@ -78,5 +82,5 @@ def delete(id):
 
 
 if __name__=='__main__':
-    app.run(debug=True) # in production level keep this debug mode to Flase
+    app.run(debug=False) # in production level keep this debug mode to Flase
 
